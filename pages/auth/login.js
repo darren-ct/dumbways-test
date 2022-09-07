@@ -1,78 +1,108 @@
-import { useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
+import { useContext } from "react";
+import { AppContext } from "../_app";
 import { useRouter } from "next/router"
 
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../../lib/names/login";
 
 import Loader from '../../components/notify/Loader'
+import Error from '../../components/notify/Error';
 
+import Input from "../../components/basic/Input";
+import Button from "../../components/basic/Button";
 
 
 const login = () => {
     const {push} = useRouter();
 
-    const [submitLogin, {data,loading,error}] = useMutation(LOGIN, )
-
+    const {user,setUser,token,setToken} = useContext(AppContext)
+    const [submitLogin, {data,loading,error}] = useMutation(LOGIN);
+    
     // States
     const[form,setForm] = useState({
-        email: "",
-        password : ""
+        email: {
+            value : "",
+            error : ""
+        },
+        password : {
+            value : "",
+            error : ""
+        }
     });
 
-    const [Error,setError] = useState({
-        email: "",
-        password:""
-    })
+    // effects
+    useLayoutEffect(()=>{
+        if(token) push("/")
+    },[token]);
+
+    useEffect(()=>{
+         if(data){
+            setToken(data.login.token);
+            setUser(data.login.user);
+            push("/")
+         };
+    },[data])
 
     // Functions
-    const onChange = (e) => {
+    const onSubmit = () => {
+        // Reset Errors
          setForm(prev => {
             return {
-                ...prev,
-                [e.target.name] : e.target.value
+                email: {
+                    value : prev.email.value,
+                    error : ""
+                },
+                password : {
+                    value : prev.password.value,
+                    error : ""
+                }
             }
-         })
-    };
-
-    const onSubmit = () => {
-         setError({email:"",password:""});
+         });
 
         //  Validation
-         if(!form.email) return setError(prev => { return {...prev,email:"Email input can't be empty"} });
-         if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email))) return setError(prev => { return {...prev,email:"Email format invalid"} });
-         if(!form.password || form.password.length < 8) return setError(prev => { return {...prev,password:"Password cant be empty and must have minimal 8 characters"} });
+         if(!form.email.value) {
+            return setForm( prev => { 
+                return {...prev,email:{value: prev.email.value, error:"Email input can't be empty"}} 
+            })
+        };
+
+         if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email.value))){
+            return setForm(prev => { 
+                return {...prev,email:{value: prev.email.value, error:"Email format invalid"}} 
+           })
+        };
+
+         if(!form.password.value || form.password.value.length < 8) {
+            return setForm(prev => { 
+                return {...prev,password:{value: prev.email.password, error:"Password cant be empty and must have minimal 8 characters"}} 
+            })
+        };
 
         // Submit
         submitLogin({ 
-            variables: { input: {email:form.email, password: form.password }}
+            variables: { input: {email:form.email.value, password: form.password.value }}
         });
         
     };
 
-    // 
-    console.log(error,data)
+    // IF ELSE
+    if(error) {
+        console.log(`this is ${error}`)
+    }
     if(loading) return <Loader/>
 
     return (
-    <div className='xl:container xl:mx-auto '>
+    <div className='xl:container xl:mx-auto px-8 py-4'>
              {/* <Loader /> */}
              <div className='w-full max-w-lg mx-auto flex flex-col items-center justify-start mt-20 p-8 border border-slate-50 rounded-xl shadow-md'>
                   <span className='text-2xl font-semibold'>Login</span>
-                  <span className='text-sm font-medium'>Isi email & password Anda</span>
+                  <span className='text-sm font-medium mb-10'>Isi email & password Anda</span>
                   
-                  <div className='relative flex flex-col mt-10 mb-1 w-full pb-6'>
-                      <label className='mb-1'>Email</label>
-                      <input name="email" value={form.email} onChange={onChange} type="text" placeholder='Isi email Anda' className={`outline-none bg-slate-100 rounded-lg py-2 px-4 ${Error.email && "border border-red-500"}`}/>
-                      <p className="absolute bottom-1 text-red-500 text-xs">{Error.email}</p>
-                  </div>
+                  <Input label="Email" type="text" placeholder="Enter your email" name="email" form={form} setForm={setForm}/>
+                  <Input label="Password" type="password" placeholder="Enter your password" name="password" form={form} setForm={setForm}/>
 
-                  <div className='relative flex flex-col w-full pb-6'>
-                       <label className='mb-1'>Password</label>
-                       <input name="password" value={form.password} onChange={onChange} type="password" placeholder='Isi Password Anda' className={`outline-none bg-slate-100 rounded-lg py-2 px-4 ${Error.password && "border border-red-500"}`}/>
-                       <p className="absolute bottom-1 text-red-500 text-xs">{Error.password}</p>
-                  </div>
-
-                  <button onClick={onSubmit} className='mt-8 w-full p-2 text-lg rounded-lg text-white duration-100 hover:opacity-70' style={{background:"#645CAA"}}>Login</button>
+                  <Button onClick={onSubmit} content="Login" theme="primary" width="full" mt={10}/>
              </div>
     </div> 
   )
