@@ -126,8 +126,9 @@ const PostAttendance = ({ids,setOnPost}) => {
 
 // 
 
-if(loading) return <Loader />
-if(error || error2) return <Error />
+if(loading || loading2) return <Loader />
+if(error) return <Error error="Make sure all inputs are number..."/>
+if(error2) return <Error />
 
   return (
     <div style={{background:"rgba(0,0,0,.8)",zIndex:49}} className='w-full h-full fixed top-0 left-0 flex items-center justify-center' onClick={()=>{setOnPost(false)}}>

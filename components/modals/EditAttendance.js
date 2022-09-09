@@ -126,7 +126,8 @@ const EditAttendance = ({id, setOnEdit}) => {
   };
 
   // 
-  if(error2 || error) return <Error />
+  if(error2) return <Error error="Make sure all inputs are number..."/>
+  if(error) return <Error />
   if(loading2 || loading) return <Loader/>
 
 

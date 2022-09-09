@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext} from "react";
+import { useState, useEffect, createContext, useContext} from "react";
 import { useQuery } from '@apollo/client';
 import { useRouter } from "next/router"
 import Image from "next/image";
@@ -15,6 +15,7 @@ import Success from "../components/notify/Success";
 import PostBatch from "../components/modals/PostBatch";
 import EditBatch from "../components/modals/EditBatch";
 import DeleteBatch from "../components/modals/DeleteBatch";
+import { AppContext } from "./_app";
 
 
 
@@ -24,7 +25,7 @@ export const HomeContext = createContext(null);
 const Index = () => {
 
    const {push} = useRouter();
-  
+  const {token} = useContext(AppContext);
   const { loading, error, data, refetch } = useQuery(GET_BATCHES,{notifyOnNetworkStatusChange: true,
       variables: {
             limit:10,
@@ -67,9 +68,9 @@ const Index = () => {
             
   },[search, page]);
 
-//   useEffect(()=>{
-//        if(!token) push('/auth/login');
-//   },[])
+  useEffect(()=>{
+       if(!token) push('/auth/login');
+  },[])
 
   // FUNCTION
   const onChange = (e) => {
@@ -97,7 +98,8 @@ const Index = () => {
           {editModal && <EditBatch setEditModal={setEditModal} id={onEdit}/>}
           {onPost && <PostBatch setOnPost={setOnPost}/>}
 
-          <span className='text-3xl font-semibold mt-10 mb-8'>Daftar Batches</span>
+          <span className='text-3xl font-semibold mt-10'>Daftar Batches</span>
+          <span className="text-lg mb-8">Click the row to see the classes</span>
           <div className='relative w-full max-w-lg'>
                 <span className="absolute left-6 top-3">
                     <Image src="/search.png" width="12" height="12"/>

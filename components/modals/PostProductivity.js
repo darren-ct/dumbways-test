@@ -106,7 +106,8 @@ const PostProductivity = ({setOnPost ,ids}) => {
   };
 
   // 
-  if(error2 || error) return <Error />
+  if(error) return <Error error="Make sure all inputs are number..."/>
+  if(error2) return <Error />
   if(loading) return <Loader/>
 
 

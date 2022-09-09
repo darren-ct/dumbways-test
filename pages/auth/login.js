@@ -33,7 +33,9 @@ const Login = () => {
 
     // effects
     useLayoutEffect(()=>{
-        if(token) push("/")
+        if(token) {
+            push("/")
+        };
     },[token]);
 
     useEffect(()=>{
@@ -88,7 +90,7 @@ const Login = () => {
 
     // IF ELSE
     if(error) {
-        console.log(`this is ${error}`)
+        return <Error error="Make sure your credentials is correct"/>
     }
     if(loading) return <Loader/>
 

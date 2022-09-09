@@ -19,7 +19,7 @@ const BatchRow = ({id,name,index}) => {
   };
 
   return (
-  <tr className='text-center border-b border-slate-200 cursor-pointer' onClick={()=>{push(`/batch/${id}`)}}>
+  <tr className='text-center border-b border-slate-200 cursor-pointer duration-150 hover:scale-105 hover:opacity-70' onClick={()=>{push(`/batch/${id}`)}}>
      <td className='p-3 text-lg'>{index + 1}</td>
      <td className='p-3 text-lg'>{name}</td>
      <td className='p-3 flex flex-row space-x-3 items-center justify-center'>

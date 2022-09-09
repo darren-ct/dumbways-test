@@ -65,7 +65,7 @@ const EditProductivity = ({id, setOnEdit}) => {
   },[data2])
   
   // Functions
-  const EditAttendance = () => {
+  const EditProd = () => {
 
     setForm(prev => { return {
       point: {value:prev.point.value,error:""}
@@ -95,7 +95,8 @@ const EditProductivity = ({id, setOnEdit}) => {
   };
 
   // 
-  if(error2 || error) return <Error />
+  if(error) return <Error />
+  if(error2) return <Error error="Make sure all inputs are number..."/>
   if(loading2 || loading) return <Loader/>
 
 
@@ -110,7 +111,7 @@ const EditProductivity = ({id, setOnEdit}) => {
 
         <Input placeholder="Enter Points" label="Points" name="point" form={form} setForm={setForm}/>
 
-        <Button content="Edit Attendance" onClick={EditAttendance} theme="primary" width="full" mt={4}/>
+        <Button content="Edit Productivity" onClick={EditProd} theme="primary" width="full" mt={4}/>
     </div>
 
    </div>
