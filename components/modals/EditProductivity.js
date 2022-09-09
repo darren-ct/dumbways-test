@@ -8,6 +8,7 @@ import { PUT_PRODUCTIVITY } from "../../lib/names/productivity";
 import Loader from "../notify/Loader";
 import Button from "../basic/Button";
 import Input from "../basic/Input";
+import Error from "../notify/Error";
 
 const EditProductivity = ({id, setOnEdit}) => {
   const {refetch, setSuccessMsg, classId} = useContext(ProductivityContext);

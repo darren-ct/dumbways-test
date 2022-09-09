@@ -66,7 +66,7 @@ const Attendances = (props) => {
             <span style={{color:"#645CAA"}}>Attendance</span>
           </div>
 
-          <span className="mt-24 font-semibold text-2xl">{props.name}-{props.type}'s Attendance</span>
+          <span className="mt-24 font-semibold text-2xl">{props.name}-{props.type}&apos;s Attendance</span>
 
           {/* TABLE */}
           <div className="w-full max-w-4xl flex flex-row items-center justify-end mt-10"> 

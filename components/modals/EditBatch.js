@@ -2,13 +2,14 @@ import { useState, useContext, useEffect } from "react";
 import { HomeContext } from "../../pages";
 import client from "../../lib/apollo-client";
 
-import { useQuery, useMutation } from "@apollo/client";
+import {  useMutation } from "@apollo/client";
 import { GET_BATCH } from "../../lib/names/batches";
 import { PUT_BATCH } from "../../lib/names/batches";
 
 import Loader from "../notify/Loader";
 import Button from "../basic/Button";
 import Input from "../basic/Input";
+import Error from "../notify/Error";
 
 const EditBatch = ({id, setEditModal}) => {
   const {refetch, setSuccessMsg} = useContext(HomeContext);

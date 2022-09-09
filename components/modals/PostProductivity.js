@@ -6,6 +6,7 @@ import { POST_PRODUCTIVITY, GET_NON_PRODUCTIVITY } from "../../lib/names/product
 
 import Loader from "../notify/Loader";
 import Button from "../basic/Button";
+import Error from "../notify/Error";
 import Input from "../basic/Input";
 import Image from "next/image";
 
@@ -129,7 +130,7 @@ const PostProductivity = ({setOnPost ,ids}) => {
         <div className={`h-32 mb-8 w-full my-4 flex flex-col items-center ${!loading2 && data2.users.length !== 0 ? "justify-start" : "justify-center"}`} style={{overflowY:"scroll",overflowX:"hidden"}}>
               <div className="flex flex-col items-center px-2 w-full" style={{maxWidth:240}}>
                  {loading2 ? <span style={{color:"#645CAA"}}>Loading..</span> : data2.users.length === 0 ? <span>No results found..</span> : data2.users.map(user =>
-                     <div className="w-full mb-4 p-4 flex flex-row items-center justify-start rounded-md border border-slate-200 shadow-md space-x-4 duration-150 hover:scale-110">
+                     <div key={user.id} className="w-full mb-4 p-4 flex flex-row items-center justify-start rounded-md border border-slate-200 shadow-md space-x-4 duration-150 hover:scale-110">
                             <Image src="/unknown.png" width={24} height={24}/>
                             <div className="flex-1" style={{flex:1}}>{user.firstName}</div>
                             <input type="radio" name="pickone" value={pickedId === user.id ? true : false} onChange={(e)=>{setPickedId(user.id)}}/>

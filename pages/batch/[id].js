@@ -44,7 +44,7 @@ const Batch = (props) => {
 
              {
               data.classes.map((item,index) => (
-                <div className="p-20 flex flex-col items-center shadow-2xl rounded-xl border border-slate-100 cursor-pointer duration-150 hover:scale-110 hover:border-violet-600" onClick={()=>{push(`/class/${item.id}`)}}>
+                <div key={item.id} className="p-20 flex flex-col items-center shadow-2xl rounded-xl border border-slate-100 cursor-pointer duration-150 hover:scale-110 hover:border-violet-600" onClick={()=>{push(`/class/${item.id}`)}}>
                  <span className="font-semibold text-3xl mb-4" style={{color:"#645CAA"}}>{index+1}</span>
                  <span className="text-xl">{item.type}</span>
              </div>

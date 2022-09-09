@@ -8,6 +8,7 @@ import { PUT_ATTENDANCE } from "../../lib/names/attendances";
 import Loader from "../notify/Loader";
 import Button from "../basic/Button";
 import Input from "../basic/Input";
+import Error from "../notify/Error";
 
 const EditAttendance = ({id, setOnEdit}) => {
   const {refetch, setSuccessMsg, classId} = useContext(AttendanceContext);
@@ -104,10 +105,6 @@ const EditAttendance = ({id, setOnEdit}) => {
       })
     };
 
-    console.log(Number(attendanceForm.present.value))
-    console.log(Number(attendanceForm.sick.value))
-    console.log(Number(attendanceForm.permission.value))
-    console.log(Number(attendanceForm.absent.value))
 
     updateattendance({
       variables : {

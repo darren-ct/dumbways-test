@@ -68,7 +68,7 @@ const Softskill = (props) => {
             <span style={{color:"#645CAA"}}>Softskills</span>
           </div>
 
-          <span className="mt-24 font-semibold text-2xl">{props.name}-{props.type}'s Softskills</span>
+          <span className="mt-24 font-semibold text-2xl">{props.name}-{props.type}&apos;s Softskills</span>
 
           {/* TABLE */}
           <div className="w-full max-w-4xl flex flex-row items-center justify-end mt-10"> 

@@ -105,7 +105,7 @@ const Index = () => {
                 <input value={search} onChange={onChange} placeholder='Cari batch'  className='w-full outline-none bg-slate-100 rounded-lg py-3 px-12'/>
           </div>
           <div className="w-full max-w-2xl flex flex-row justify-between mt-16 -mb-10">
-              <span className="text-xs" style={{color:"#645CAA"}}> Showing results for "{search}" on page number {page} </span>
+              <span className="text-xs" style={{color:"#645CAA"}}> Showing results for &quot;{search}&quot; on page number {page} </span>
               <span className="text-xs" style={{color:"#645CAA"}}> *Every page contains  maximum 10 fields</span>
           </div>
 

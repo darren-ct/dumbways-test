@@ -8,6 +8,7 @@ import { PUT_SOFTSKILL } from "../../lib/names/softskills";
 import Loader from "../notify/Loader";
 import Button from "../basic/Button";
 import Input from "../basic/Input";
+import Error from "../notify/Error";
 
 const EditSoftskill = ({id, setOnEdit}) => {
   const {refetch, setSuccessMsg, classId} = useContext(SoftskillContext);

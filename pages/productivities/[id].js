@@ -67,7 +67,7 @@ const Productivity = (props) => {
             <span style={{color:"#645CAA"}}>Productivity</span>
           </div>
 
-          <span className="mt-24 font-semibold text-2xl">{props.name}-{props.type}'s Productivity</span>
+          <span className="mt-24 font-semibold text-2xl">{props.name}-{props.type}&apos;s Productivity</span>
 
           {/* TABLE */}
           <div className="w-full max-w-4xl flex flex-row items-center justify-end mt-10"> 
