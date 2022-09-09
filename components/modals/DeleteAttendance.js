@@ -1,29 +1,29 @@
 import { useContext, useEffect } from "react";
-import { HomeContext } from "../../pages";
+import { AttendanceContext } from "../../pages/attendances/[id].js";
 
 import { useMutation } from "@apollo/client";
-import { DELETE_BATCH } from "../../lib/names/batches";
+import { DELETE_ATTENDANCE } from "../../lib/names/attendances";
 
 import Loader from "../notify/Loader";
-import Error from "../notify/Error";
+import Error from "../notify/Error.js";
 import Button from "../basic/Button";
 
-const DeleteBatch = ({id,setDeleteModal}) => {
-  const {refetch, setSuccessMsg} = useContext(HomeContext);
-  const [deleteBatch, { data, loading, error }] = useMutation(DELETE_BATCH);
+const DeleteAttendance = ({id,setDeleteModal}) => {
+  const {refetch, setSuccessMsg, classId} = useContext(AttendanceContext);
+  const [removeAtt, { data, loading, error }] = useMutation(DELETE_ATTENDANCE);
 
     // useEffect
     useEffect(()=>{
          if(data) {
-          setSuccessMsg("Batch deleted");
-          refetch({limit:10});
+          setSuccessMsg("Attendance removed");
+          refetch({id:classId});
           setDeleteModal(false)
-         }
+         };
     },[data])
 
     // Functions
     const deleteItem = async(e) => {
-         deleteBatch({variables:{
+         removeAtt({variables:{
              id:id
          }});
 
@@ -31,7 +31,6 @@ const DeleteBatch = ({id,setDeleteModal}) => {
 
     const ignore = (e) => {
       e.stopPropagation();
-  
     };
 
     // 
@@ -49,7 +48,6 @@ const DeleteBatch = ({id,setDeleteModal}) => {
           </div>
       </div>
     )
-  }
-  
+}
 
-export default DeleteBatch
+export default DeleteAttendance

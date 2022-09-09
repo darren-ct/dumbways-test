@@ -1,5 +1,5 @@
-import { useState, useEffect, createContext, useContext} from "react";
-import { useLazyQuery } from '@apollo/client';
+import { useState, useEffect, createContext} from "react";
+import { useQuery } from '@apollo/client';
 import { useRouter } from "next/router"
 import Image from "next/image";
 
@@ -17,17 +17,23 @@ import EditBatch from "../components/modals/EditBatch";
 import DeleteBatch from "../components/modals/DeleteBatch";
 
 
-import { AppContext } from "./_app";
+
 export const HomeContext = createContext(null);
 
 
-const index = (props) => {
+const index = () => {
 
-   const {token} = useContext(AppContext);
    const {push} = useRouter();
   
-  // Lazy query
-  const [getBatches, { loading, error, data, refetch }] = useLazyQuery(GET_BATCHES,{notifyOnNetworkStatusChange: true});
+  const { loading, error, data, refetch } = useQuery(GET_BATCHES,{notifyOnNetworkStatusChange: true,
+      variables: {
+            limit:10,
+            skip:0,
+            where : {
+                  name_contains:""
+            }
+      }
+   });
 
   // STATE 
         // sort
@@ -51,13 +57,19 @@ const index = (props) => {
   
   // EFFECT
   useEffect(()=>{
-      if(!data) return getBatches
-      refetch({ limit:10});
-  },[search]);
+      if(data) { 
+            refetch({
+                  limit:10,
+                  skip: (page - 1) * 10,
+                  name_contains: search
+                })
+      };
+            
+  },[search, page]);
 
-  useEffect(()=>{
-       if(!token) push('/auth/login');
-  },[])
+//   useEffect(()=>{
+//        if(!token) push('/auth/login');
+//   },[])
 
   // FUNCTION
   const onChange = (e) => {
@@ -74,6 +86,7 @@ const index = (props) => {
   }
 
   // 
+  if(error) return <Error />
   if(loading) return <Loader />
   if(successMsg) return <Success setSuccessMsg={setSuccessMsg} successMsg={successMsg}/>
 
@@ -91,10 +104,14 @@ const index = (props) => {
                 </span>
                 <input value={search} onChange={onChange} placeholder='Cari batch'  className='w-full outline-none bg-slate-100 rounded-lg py-3 px-12'/>
           </div>
+          <div className="w-full max-w-2xl flex flex-row justify-between mt-16 -mb-10">
+              <span className="text-xs" style={{color:"#645CAA"}}> Showing results for "{search}" on page number {page} </span>
+              <span className="text-xs" style={{color:"#645CAA"}}> *Every page contains  maximum 10 fields</span>
+          </div>
 
 
           {/* TABLE */}
-          <div className="w-full max-w-2xl flex flex-row items-center justify-end mt-10"> 
+          <div className="w-full max-w-2xl flex flex-row items-center justify-end"> 
              <div className="text-lg text-white px-3 py-1 rounded-full flex items-center justify-center cursor-pointer translate-x-12 translate-y-16 hover:scale-110 duration-150" 
              style={{background:"#645CAA"}} onClick={()=>{setOnPost(true)}}>+</div>
           </div>
@@ -108,7 +125,7 @@ const index = (props) => {
                     </tr>
               </thead>
               <tbody>
-                  {!data ? props.batches.map((batch,index) => <BatchRow id={batch.id} name={batch.name} key={batch.id} index={index}/>) : data.batches.map((batch,index) => <BatchRow id={batch.id} name={batch.name} key={batch.id} index={index}/>)}
+                  {data.batches.map((batch,index) => <BatchRow id={batch.id} name={batch.name} key={batch.id} index={index}/>)}
               </tbody> 
          </table>
 
@@ -123,21 +140,5 @@ const index = (props) => {
   )
 };
 
-
-
-
-// OTHERS
-export async function getServerSideProps() {
-      const { data } = await client.query({
-        query: GET_BATCHES,
-        variables : {limit:10}
-      });
-    
-       return {
-            props : {
-                 batches : data.batches
-            }
-       }
-}
 
 export default index

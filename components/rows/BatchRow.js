@@ -6,12 +6,14 @@ const BatchRow = ({id,name,index}) => {
   const{setOnEdit,setOnDelete,setEditModal,setDeleteModal,push} = useContext(HomeContext);
 
   // Functions
-  const toDelete = () => {
+  const toDelete = (e) => {
+       e.stopPropagation();
        setDeleteModal(true);
        setOnDelete(id);
   };
 
-  const toEdit = () => {
+  const toEdit = (e) => {
+       e.stopPropagation();
        setEditModal(true);
        setOnEdit(id)
   };

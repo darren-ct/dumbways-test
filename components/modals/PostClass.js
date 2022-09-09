@@ -3,18 +3,18 @@ import { useEffect } from "react";
 
 import { useContext } from "react";
 import { useMutation } from "@apollo/client";
-import { HomeContext } from "../../pages";
+import { ClassContext } from "../../pages/batch/[id]";
 
-import { POST_BATCH } from "../../lib/names/batches";
+import { POST_CLASS } from "../../lib/names/classes";
 
 import Loader from "../notify/Loader";
 import Button from "../basic/Button";
 import Input from "../basic/Input";
 import Error from "../notify/Error";
 
-const PostBatch = ({setOnPost}) => {
-  const {refetch, setSuccessMsg} = useContext(HomeContext);
-  const [postbatch, { data, loading, error }] = useMutation(POST_BATCH);
+const PostClass = ({setOnPost, id}) => {
+  const {refetch, setSuccessMsg} = useContext(ClassContext);
+  const [postclass, { data, loading, error }] = useMutation(POST_CLASS);
 
   //  State
   const[form,setForm] = useState({
@@ -36,21 +36,27 @@ const PostBatch = ({setOnPost}) => {
 
   if(data){
       setOnPost(false);
-      setSuccessMsg("New Batch has been posted");
-      refetch();
+      setSuccessMsg("New Class has been posted");
+      refetch({where:{batchId:id}});
   }
   
   // Functions
-  const postBatch = () => {
+  const postClass = () => {
 
     if(!form.name.value) return setForm(prev => { return {name:{
       value: prev.name.value,
       error: "Name cannot be empty"
    }}});
 
-      postbatch({
+   if(form.name.value !== "STAGEONE" && form.name.value !== "STAGETWO") return setForm(prev => { return {name:{
+    value: prev.name.value,
+    error: "Name must be either STAGEONE or STAGETWO"
+   }}});
+
+
+      postclass({
         variables : {
-          input : { name:form.name.value }
+          input : { type:form.name.value, batchId:id }
         }
       });
   };
@@ -70,16 +76,16 @@ const PostBatch = ({setOnPost}) => {
     <div className='relative py-12 px-24 bg-white flex flex-col items-center rounded-md' onClick={ignore}>
         <span className="absolute top-4 right-4 cursor-pointer text-xl font-semibold" onClick={()=>{setOnPost(false)}}>X</span>
 
-        <span className='text-xl font-semibold'>Add Batch</span>
+        <span className='text-xl font-semibold'>Add Class</span>
         <span className="mb-12">Fill the fields below</span>
         
-        <Input label="Batch Name" type="text" placeholder="Enter batch name" name="name" form={form} setForm={setForm}/>
+        <Input label="Class Name" type="text" placeholder="Enter class name" name="name" form={form} setForm={setForm}/>
 
-        <Button content="Add Batch" onClick={postBatch} theme="primary" width="full" mt={4}/>
+        <Button content="Add Class" onClick={postClass} theme="primary" width="full" mt={4}/>
     </div>
 
    </div>
   )
 }
 
-export default PostBatch
+export default PostClass;
