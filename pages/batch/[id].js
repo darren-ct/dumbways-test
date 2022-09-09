@@ -13,7 +13,7 @@ import Error from "../../components/notify/Error";
 
 export const ClassContext = createContext(null)
 
-const batch = (props) => {
+const Batch = (props) => {
   const [onPost, setOnPost] = useState(false);
   const [successMsg,setSuccessMsg] = useState(null);   
 
@@ -61,7 +61,7 @@ const batch = (props) => {
   )
 }
 
-export default batch
+export default Batch
 
 // OTHERS
 export async function getServerSideProps(context) {

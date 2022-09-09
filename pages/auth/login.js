@@ -13,7 +13,7 @@ import Input from "../../components/basic/Input";
 import Button from "../../components/basic/Button";
 
 
-const login = () => {
+const Login = () => {
     const {push} = useRouter();
 
     const {user,setUser,token,setToken} = useContext(AppContext)
@@ -108,4 +108,4 @@ const login = () => {
   )
 }
 
-export default login
+export default Login

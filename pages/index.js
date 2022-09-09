@@ -21,7 +21,7 @@ import DeleteBatch from "../components/modals/DeleteBatch";
 export const HomeContext = createContext(null);
 
 
-const index = () => {
+const Index = () => {
 
    const {push} = useRouter();
   
@@ -141,4 +141,4 @@ const index = () => {
 };
 
 
-export default index
+export default Index
